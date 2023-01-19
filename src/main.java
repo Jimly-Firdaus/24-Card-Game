@@ -311,11 +311,5 @@ public class main {
         writer.close();
         System.out.println("Please check the test folder for the output!");
     }
-
-    private static void printArr (String[] arr) {
-        for (int i = 0; i < arr.length; i++){
-            System.out.print(arr[i] + " ");
-        }
-    }
-
+    
 }
