@@ -8,46 +8,84 @@ import java.time.Duration;
 import java.util.Random;
 import java.io.IOException;
 import java.io.FileWriter;
+import java.util.Collections;
 
 public class main {
     private static final int target = 24;
     // Total combination of braces
     private static final int total_method = 5;
-
     // File output path
     private static final String pathname = "../test/";
 
     private static Scanner scanner = new Scanner(System.in);
     public static void main (String[] args) throws IOException {
-        // TODO: CLI UI
+        splashScreen();
         // Numbers container
         String[] numberChoiceCollection = new String[4];
 
+        // Allowed card collection
+        String[] cards = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+
         // Prompt for input
-        // TODO: input validation + A,J,Q,K validation
-        System.out.print("Random input ? (y/n): ");
-        String choice = scanner.next();
-        System.out.println(choice);
+        String choice;
+        do{
+            System.out.print("Random input ? (y/n): ");
+            choice = scanner.next();
+        } while (!choice.equals("y") && !choice.equals("n"));
+
         // Random numbers
         if (choice.equals("y")) {
-            int min = 0, max = 100;
+            int min = 1, max = 13;
             Random random = new Random();
-            numberChoiceCollection[0] = Integer.toString(random.nextInt(max - min + 1));
-            numberChoiceCollection[1] = Integer.toString(random.nextInt(max - min + 1));
-            numberChoiceCollection[2] = Integer.toString(random.nextInt(max - min + 1));
-            numberChoiceCollection[3] = Integer.toString(random.nextInt(max - min + 1));
+            numberChoiceCollection[0] = cards[random.nextInt(max - min + 1)];
+            numberChoiceCollection[1] = cards[random.nextInt(max - min + 1)];
+            numberChoiceCollection[2] = cards[random.nextInt(max - min + 1)];
+            numberChoiceCollection[3] = cards[random.nextInt(max - min + 1)];
         }
         // Get numbers from console
         else {
             System.out.println("Enter 4 numbers (separated by single space): ");
-            for (int i = 0; i < numberChoiceCollection.length; i++) {
-                numberChoiceCollection[i] = scanner.next();
+            boolean validInput = false;
+            while(!validInput) {
+                for (int i = 0; i < numberChoiceCollection.length; i++) {
+                    if (i >= numberChoiceCollection.length){
+                        break;
+                    }
+                    numberChoiceCollection[i] = scanner.next();
+                }
+                for (int i = 0; i < numberChoiceCollection.length; i++){
+                    if (Arrays.asList(cards).contains(numberChoiceCollection[i]) && i == numberChoiceCollection.length - 1) {
+                        validInput = true;
+                    }
+                }
+                if (!validInput) {
+                    System.out.println("Please check your input");
+                }
             }
+
         }
-        // Show choosen numbers
-        System.out.print("Choosen number: ");
+        // Show choosen cards
+        System.out.println("Choosen cards: ");
         for (String number : numberChoiceCollection){
             System.out.print(number + " ");
+        }
+        System.out.println("");
+        // Convert any allowed alphabet to number
+        for (int i = 0; i < numberChoiceCollection.length; i++) {
+            switch (numberChoiceCollection[i]){
+                case "A":
+                    numberChoiceCollection[i] = "1";
+                    break;
+                case "J":
+                    numberChoiceCollection[i] = "11";
+                    break;
+                case "Q":
+                    numberChoiceCollection[i] = "12";
+                    break;
+                case "K":
+                    numberChoiceCollection[i] = "13";
+                    break;
+            }
         }
 
         // Map to new dynamic ArrayList to append all permutation of the 4 numbers
@@ -73,8 +111,11 @@ public class main {
         Duration timeElapsed = Duration.between(start, end);
 
         // Output choice
-        System.out.println("Save solution to .txt ? (y/n): ");
-        choice = scanner.next();
+        do{
+            System.out.print("Save solution to .txt ? (y/n): ");
+            choice = scanner.next();
+        } while (!choice.equals("y") && !choice.equals("n"));
+
         if (choice.equals("y")) {
             // Output to file
             outputFileHandler(answerSet);
@@ -314,4 +355,22 @@ public class main {
         System.out.println("Please check the test folder for the output!");
     }
 
+    public static void splashScreen() {
+        System.out.println(" _______ _______ _______ _______ _______ _______ _______ _______ ");
+        System.out.println("|       |       |       |       |       |       |       |       |");
+        System.out.println("|   A   |   K   |   Q   |   J   |   T   |   9   |   8   |   7   |");
+        System.out.println("|_______|_______|_______|_______|_______|_______|_______|_______|");
+        System.out.println("|       |       |       |       |       |       |       |       |");
+        System.out.println("|   6   |   5   |   4   |   3   |   2   |   A   |   K   |   Q   |");
+        System.out.println("|_______|_______|_______|_______|_______|_______|_______|_______|");
+        System.out.println();
+        System.out.println("Welcome to the 24 Card Game Cheats!");
+        System.out.println("Guide: ");
+        System.out.println("1. Enter 4 card of your choice. ");
+        System.out.println("2. Hit Enter. ");
+        System.out.println("3. Enjoy the result. ");
+        System.out.println("Rules");
+        System.out.println("Only 4 cards will get processed!");
+        System.out.println();
+    }
 }
