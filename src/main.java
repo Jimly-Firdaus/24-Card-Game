@@ -3,26 +3,48 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.LinkedHashSet;
+import java.time.Instant;
+import java.time.Duration;
+import java.util.Random;
+import java.io.IOException;
+import java.io.FileWriter;
 
 public class main {
     private static final int target = 24;
-
     // Total combination of braces
     private static final int total_method = 5;
+
+    // File output path
+    private static final String pathname = "../test/";
+
     private static Scanner scanner = new Scanner(System.in);
     public static void main (String[] args) throws IOException {
         // Numbers container
         String[] numberChoiceCollection = new String[4];
 
-
-        System.out.println("Enter 4 numbers (separated by single space): ");
-        for (int i = 0; i < numberChoiceCollection.length; i++) {
-            numberChoiceCollection[i] = scanner.next();
+        // Prompt for input
+        System.out.print("Random input ? (y/n): ");
+        String choice = scanner.next();
+        System.out.println(choice);
+        // Random numbers
+        if (choice.equals("y")) {
+            int min = 0, max = 100;
+            Random random = new Random();
+            numberChoiceCollection[0] = Integer.toString(random.nextInt(max - min + 1));
+            numberChoiceCollection[1] = Integer.toString(random.nextInt(max - min + 1));
+            numberChoiceCollection[2] = Integer.toString(random.nextInt(max - min + 1));
+            numberChoiceCollection[3] = Integer.toString(random.nextInt(max - min + 1));
         }
-
+        // Get numbers from console
+        else {
+            System.out.println("Enter 4 numbers (separated by single space): ");
+            for (int i = 0; i < numberChoiceCollection.length; i++) {
+                numberChoiceCollection[i] = scanner.next();
+            }
+        }
         // Show choosen numbers
         System.out.print("Choosen number: ");
-        for (String number : numberChoiceCollection) {
+        for (String number : numberChoiceCollection){
             System.out.print(number + " ");
         }
 
@@ -34,6 +56,8 @@ public class main {
         // Solution container
         Set<String> answerSet = new LinkedHashSet<>();
 
+        // Start Time
+        Instant start = Instant.now();
 
         for (int i = 1; i <= total_method; i++) {
             for (ArrayList<String> numberChoice : permutationArr) {
@@ -41,6 +65,32 @@ public class main {
                 solve(numberChoice.get(0), numberChoice.get(1), numberChoice.get(2), numberChoice.get(3), i, answerSet);
             }
         }
+
+        // End timer
+        Instant end = Instant.now();
+        Duration timeElapsed = Duration.between(start, end);
+
+        // Output choice
+        System.out.println("Save solution to .txt ? (y/n): ");
+        choice = scanner.next();
+        if (choice.equals("y")) {
+            // Output to file
+            outputFileHandler(answerSet);
+        } else {
+            // Output to console
+            if (answerSet.size() == 0) {
+                System.out.println("No Solutions");
+            } else {
+                System.out.println(answerSet.size() + " solutions found.");
+                int index = 1;
+                for (String element : answerSet) {
+                    System.out.println(index + ". " + element);
+                    index++;
+                }
+            }
+        }
+
+        System.out.println("\nExecution Time: " + timeElapsed.toMillis() + " milliseconds");
 
     }
 
@@ -192,6 +242,74 @@ public class main {
         }
         calculationResult[0] = format;
         calculationResult[1] = result;
+    }
+
+    /**
+     * Arithmetic math evaluation
+     * @param operator
+     * @param num_1
+     * @param num_2
+     * @return arithmetic result in string
+     * */
+    private static String eval (String operator, String num_1, String num_2) {
+        double result = 0;
+        double num1 = Double.parseDouble(num_1);
+        double num2 = Double.parseDouble(num_2);
+        String resultString;
+        switch (operator){
+            case "+":
+                result = num1 + num2;
+                break;
+            case "-":
+                result = num1 -  num2;
+                break;
+            case "*":
+                result = num1 * num2;
+                break;
+            case "/":
+                try {
+                    result = num1 / num2;
+                } catch (ArithmeticException e) {
+                    result = 0;
+                }
+                break;
+        }
+        resultString = Double.toString(result);
+        return resultString;
+    }
+
+    /**
+     * Takes in full math expression then pass to eval function
+     * @param fullExpr math expression
+     * @return arithmetic result in string
+     * */
+    private static String evalExpr (String fullExpr) {
+        String[] exprInArr = fullExpr.split(" ");
+        return eval(exprInArr[1], exprInArr[0], exprInArr[2]);
+    }
+
+    /**
+     * File handler for output
+     * @param answerSet set of all solutions
+     * */
+    private static void outputFileHandler (Set<String> answerSet) throws IOException {
+        System.out.print("Please input the filename: ");
+        String fileName = scanner.next();
+        String content = "";
+        if (answerSet.size() != 0) {
+            content += answerSet.size() + " solutions found\n";
+            int index = 1;
+            for (String element : answerSet) {
+                content += index + ". " + element + "\n";
+                index++;
+            }
+        } else {
+            content = "No Solution\n";
+        }
+        FileWriter writer = new FileWriter (pathname + fileName + ".txt");
+        writer.write(content);
+        writer.close();
+        System.out.println("Please check the test folder for the output!");
     }
 
     private static void printArr (String[] arr) {
