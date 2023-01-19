@@ -1,13 +1,7 @@
 import java.util.Scanner;
 import java.util.Arrays;
 import java.util.ArrayList;
-import java.util.Set;
-import java.util.LinkedHashSet;
-import java.time.Instant;
-import java.time.Duration;
-import java.util.Random;
-import java.io.IOException;
-import java.io.FileWriter;
+
 
 public class main {
     private static final int target = 24;
