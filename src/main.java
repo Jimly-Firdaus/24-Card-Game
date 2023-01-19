@@ -19,10 +19,12 @@ public class main {
 
     private static Scanner scanner = new Scanner(System.in);
     public static void main (String[] args) throws IOException {
+        // TODO: CLI UI
         // Numbers container
         String[] numberChoiceCollection = new String[4];
 
         // Prompt for input
+        // TODO: input validation + A,J,Q,K validation
         System.out.print("Random input ? (y/n): ");
         String choice = scanner.next();
         System.out.println(choice);
