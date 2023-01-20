@@ -62,7 +62,8 @@ public class main {
                     System.out.println("Please check your input");
                 }
             }
-
+            // Clear scanner
+            scanner.nextLine();
         }
         // Show choosen cards
         System.out.println("Choosen cards: ");
