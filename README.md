@@ -17,10 +17,9 @@ mengubah 4 buah angka random sehingga mendapatkan hasil akhir sejumlah 24.
 
 
 ## How To Run
-### Run Using Windows Batch File
-```shell
-null
-```
+### Run Using Windows Batch File (Recompile)
+1. Locate the `run.bat` batch file (on the root of this project).
+2. Double click `run.bat`.
 
 ### Run Manually with Console
 ```shell
@@ -38,18 +37,29 @@ java main     # run the .class file
 ## Project Structure
 ```bash
 .
-│   README.md
 │   .gitignore
+│   README.md
+│   run.bat
 │
 ├───bin
+│       main.class
 │
 ├───doc
-│   
+│       Tucil1_K2_13521102_Jimly Firdaus.pdf
 │
-├───src   
-│   └─── main.java
+├───src
+│       main.java
 │
 └───test
+        testCase4.txt
+        testInput.txt
+        testRandom1.txt
+        testRandom2.txt
+        test_case1.txt
+        test_case2.txt
+        test_case3.txt
+        test_case5.txt
+        test_case6.txt
 ```
 
 ## Credits
